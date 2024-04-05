@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl {
     @Autowired
     private KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate;
     @Autowired
@@ -28,10 +28,9 @@ public class ProductServiceImpl implements ProductService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    @Override
     public String createProduct(ProductDto productDto) throws ExecutionException, InterruptedException {
 
-        BigDecimal newPrice = newPrice(productDto.getPrice(), "Запрос на новую цену.");
+        BigDecimal newPrice = newPrice(productDto.getPrice());
 
         ProductEntity productEntity = ProductEntity.builder()
                 .title(productDto.getTitle())
@@ -39,26 +38,26 @@ public class ProductServiceImpl implements ProductService {
                 .quantity(productDto.getQuantity())
                 .build();
         productRepository.save(productEntity);
-        LOGGER.info("Product {} saved", productEntity.getProductId());
+        LOGGER.info("My log: Product {} saved", productEntity.getProductId());
 
         ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent(productDto.getTitle(), "Aston");
         SendResult<String, ProductCreatedEvent> result = kafkaTemplate
                 .send("product-create-topic", productEntity.getProductId().toString(), productCreatedEvent).get();
-        LOGGER.info("Topic: {}", result.getRecordMetadata().topic());
+        LOGGER.info("My log: Topic: {}", result.getRecordMetadata().topic());
 
-        return  "The price has been changed by " + productEntity.getPrice().toString();
+        return "The price has been changed by " + productEntity.getPrice().toString();
     }
 
     @GrpcClient("service-grpc")
     EventServiceGrpc.EventServiceBlockingStub stub;
 
-    BigDecimal newPrice(BigDecimal price, String message) {
+    BigDecimal newPrice(BigDecimal price) {
         Event.CreatedEventRequest request = Event.CreatedEventRequest.newBuilder()
-                .setMessage(message).build();
+                .setMessage("Запрос в компанию новую цену.").build();
 
         Event.CreatedEventResponse response = stub.createdEvent(request);
         BigDecimal newPrice = price.multiply(BigDecimal.valueOf(response.getUpPrice()));
-        LOGGER.info("The price has been changed by " + response.getCompany() + ". new price: " + newPrice);
+        LOGGER.info("My log: The price has been changed by " + response.getCompany() + ". new price: " + newPrice);
         return newPrice;
     }
 }

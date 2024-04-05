@@ -1,7 +1,5 @@
 package com.aston.core;
 
-import java.math.BigDecimal;
-
 public class ProductCreatedEvent {
     private String title;
     private String company;

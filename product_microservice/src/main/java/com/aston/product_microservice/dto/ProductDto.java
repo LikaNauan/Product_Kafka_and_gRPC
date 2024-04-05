@@ -1,42 +1,15 @@
 package com.aston.product_microservice.dto;
 
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDto {
     private String title;
     private BigDecimal price;
     private Integer quantity;
-
-    public ProductDto() {
-    }
-
-    public ProductDto(String title, BigDecimal price, Integer quantity) {
-        this.title = title;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

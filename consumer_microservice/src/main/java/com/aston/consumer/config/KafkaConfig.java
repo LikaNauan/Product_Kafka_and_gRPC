@@ -3,12 +3,9 @@ package com.aston.consumer.config;
 import com.aston.consumer.grpc.service.EventServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -21,12 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class KafkaConfig {
 
-    @Autowired
     Environment environment;
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Bean
     ConsumerFactory<String, Object> consumerFactory() {
@@ -48,6 +43,7 @@ public class KafkaConfig {
         factory.setConsumerFactory(consumerFactory);
         return factory;
     }
+
     @Bean
     public Server grpcServer(EventServiceImpl eventService) {
         return ServerBuilder.forPort(9103)

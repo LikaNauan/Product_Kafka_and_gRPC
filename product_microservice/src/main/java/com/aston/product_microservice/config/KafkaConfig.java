@@ -2,9 +2,6 @@ package com.aston.product_microservice.config;
 
 
 import com.aston.core.ProductCreatedEvent;
-import com.aston.product_microservice.service.ProductServiceImpl;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
