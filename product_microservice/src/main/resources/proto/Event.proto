@@ -1,0 +1,21 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package com.aston.grpc;
+
+service EventService {
+  rpc createdEvent (CreatedEventRequest) returns (CreatedEventResponse);
+}
+
+message CreatedEventRequest {
+  string message = 1;
+}
+
+message CreatedEventResponse {
+  int32 upPrice = 1;
+  string company = 2;
+}
+
+
+message ErrorResponse {
+  string error_name = 1;
+}

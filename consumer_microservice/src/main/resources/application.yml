@@ -1,0 +1,28 @@
+grpc:
+    port: 9103
+
+server:
+    port: 8002
+
+spring:
+    application:
+        name: ConsumerMicroservice
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        hikari:
+            schema: public
+        password: 353062
+        url: jdbc:postgresql://localhost:5433/PRODUCT-db
+        username: admin
+    kafka:
+        consumer:
+            auto-offset-reset: earliest
+            bootstrap-servers: localhost:9092
+            group-id: product-created-events
+            properties:
+                spring:
+                    json:
+                        trusted:
+                            packages: com.aston.core
+        template:
+            default-topic: product-create-topic
